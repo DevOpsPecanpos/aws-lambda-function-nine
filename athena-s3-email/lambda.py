@@ -33,7 +33,9 @@ def lambda_handler(event, context):
     print("files in cwd are : " + str(os.listdir()))
 
     SENDER = "BusinessApplicationDevelopers@nine.com.au"
-    RECIPIENT = [key.split("/")[0]+"@nine.com.au"]
+
+    RECIPIENT = [(key.split("/")[0] if len(key.split("/")) >
+                  1 else "BusinessApplicationDevelopers")+"@nine.com.au"]
     # AWS_REGION = "us-east-1"
     SUBJECT = "[Lambda function triggered.] AWS Athena Result"
     BODY_TEXT = """AWS Athena Result
