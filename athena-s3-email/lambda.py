@@ -22,6 +22,9 @@ def lambda_handler(event, context):
     key = urllib.parse.unquote_plus(
         event['Records'][0]['s3']['object']['key'], encoding='utf-8')
 
+    if not (key.endswith(".txt") or key.endswith(".csv")):
+        return
+
     print(f"Downloading file s3://{bucket}/{key}")
 
     os.chdir("/tmp")
