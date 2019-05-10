@@ -34,8 +34,12 @@ def lambda_handler(event, context):
 
     SENDER = "BusinessApplicationDevelopers@nine.com.au"
 
-    RECIPIENT = [(key.split("/")[0] if len(key.split("/")) >
-                  1 else "BusinessApplicationDevelopers")+"@nine.com.au"]
+    s3.download_file(bucket, (key.split("/")[0] + "/email_config.json" if len(key.split("/")) >
+                              1 else "email_config.json"), "email_config.json")
+    with open("email_config.json") as f:
+        email_config = json.load(f)
+
+    RECIPIENT = email_config["emails"]
     # AWS_REGION = "us-east-1"
     SUBJECT = "[Lambda function triggered.] AWS Athena Result"
     BODY_TEXT = """AWS Athena Result
