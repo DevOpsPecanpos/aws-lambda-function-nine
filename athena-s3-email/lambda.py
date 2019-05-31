@@ -42,6 +42,10 @@ def lambda_handler(event, context):
     RECIPIENT = email_config["emails"]
     # AWS_REGION = "us-east-1"
     SUBJECT = "[Lambda function triggered.] AWS Athena Result"
+
+    if email_config.get("email_subject"):
+        SUBJECT = SUBJECT+f"for {email_config.get('email_subject')}"
+
     BODY_TEXT = """AWS Athena Result
              Please find the result for {s3file} {{situation}}
              """.format(s3file=f"s3://{bucket}/{key}")
