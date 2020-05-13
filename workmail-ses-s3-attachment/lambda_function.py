@@ -24,6 +24,10 @@ dest_bucket = "datascience-email-attachment"
 
 def lambda_handler(event, context):
     print("Received event: " + json.dumps(event, indent=2))
+
+    # print("IP address is : ")
+    # print(requests.get('http://checkip.amazonaws.com').text.rstrip())
+
     try:
         # Get the object from the event and show its content type
         bucket = event['Records'][0]['s3']['bucket']['name']
@@ -114,7 +118,7 @@ def put(local_path, bucket, key):
 def slack_notification(message):
     base_uri = "http://slack.datascience.ec2/postMessage"
     warningTemplateMessage = {
-        "text": "<!here> Error: Athena runner email trigger {}  "}
+        "text": "<!here> Error: Workmail email trigger {}  "}
 
     headers = {'Content-Type': 'application/json'}
 

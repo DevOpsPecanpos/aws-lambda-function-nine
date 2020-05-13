@@ -37,26 +37,27 @@ def lambda_handler(event, context):
 
         SENDER = "businessapplicationdevelopers@nine.com.au"
 
-        s3.download_file(bucket, (key.split("/")[0] + "/email_config.json" if len(key.split("/")) >
+        s3.download_file(bucket, (re.search(r"(.*)/results", key).group(1) + "/email_config.json" if len(key.split("/")) >
                                   1 else "email_config.json"), "email_config.json")
         with open("email_config.json") as f:
             email_config = json.load(f)
 
         RECIPIENT = email_config["emails"]
         # AWS_REGION = "us-east-1"
-        SUBJECT = "[Lambda function triggered.] AWS Athena Result"
+
+        SUBJECT = "File landed on s3 bucket"
 
         if email_config.get("email_subject"):
             SUBJECT = SUBJECT+f" for {email_config.get('email_subject')}"
 
-        BODY_TEXT = """AWS Athena Result
+        BODY_TEXT = """File landed on s3 bucket
                 Please find the result for {s3file} {{situation}}
                 """.format(s3file=f"s3://{bucket}/{key}")
 
         BODY_HTML = """<html>
                         <head></head>
                         <body>
-                        <h2>AWS Athena Result</h2>
+                        <h2>File landed on s3 bucket</h2>
                         <p>Please find the result for {s3file} {{situation}} .</p>
                         </body>
                     </html>
